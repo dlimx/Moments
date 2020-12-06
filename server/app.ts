@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import dotenv from 'dotenv';
 import path from 'path';
+import { apiRouter } from './routes';
 
 dotenv.config();
 
@@ -16,14 +17,14 @@ app.use(cookieParser());
 
 app.use('/public', express.static(path.resolve(__dirname, '../../build-client')));
 
-app.get('/api', (req, res) => {
-  res.send({ hello: 'world' });
-});
+app.use('/api', apiRouter);
 
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../../build-client/index.html'));
 });
 
-app.listen(3001, () => {
-  console.log('Example app listening on port 3001!');
+const port = process.env.PORT || 3001;
+
+app.listen(port, () => {
+  console.log(`Application started on ${port}`);
 });

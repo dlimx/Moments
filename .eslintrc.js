@@ -8,6 +8,8 @@ const defaultRules = {
   'import/no-default-export': 'error',
   'max-len': 'off',
   'object-curly-newline': 'off',
+  'no-unused-vars': 'warn',
+  'implicit-arrow-linebreak': 'off',
 };
 
 module.exports = {
@@ -28,6 +30,7 @@ module.exports = {
       },
       rules: {
         ...defaultRules,
+        '@typescript-eslint/no-unused-vars': 'off',
       },
     },
   ],
