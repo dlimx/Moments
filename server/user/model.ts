@@ -12,17 +12,22 @@ export interface IUserData {
 export interface IUser extends IUserData {
   id: number;
   token?: string;
+  self?: string;
 }
 
-export class UserModel implements Partial<IModel<IUser>> {
-  static getAll = async () => {
+class UserModelFactory implements Partial<IModel<IUser>> {
+  getAll = async () => {
     const query = datastore.createQuery(KEY_USER);
 
     const data = await datastore.runQuery(query);
-    return parseDataFromDatastoreResult<IUser[]>(data);
+    return parseDataFromDatastoreResult<IUser>(data).map((user) => {
+      // eslint-disable-next-line no-param-reassign
+      delete user.password;
+      return user;
+    });
   };
 
-  static create = async (payload: Partial<IUser>) => {
+  create = async (payload: Partial<IUser>) => {
     const key = datastore.key(KEY_USER);
 
     const saveData = { ...payload };
@@ -35,8 +40,8 @@ export class UserModel implements Partial<IModel<IUser>> {
     return user;
   };
 
-  static getByEmail = async (email: string) => {
-    const user = await UserModel.getForAuthentication(email);
+  getByEmail = async (email: string) => {
+    const user = await this.getForAuthentication(email);
     if (user) {
       delete user.password;
     }
@@ -44,11 +49,13 @@ export class UserModel implements Partial<IModel<IUser>> {
     return user;
   };
 
-  static getForAuthentication = async (email: string) => {
+  getForAuthentication = async (email: string) => {
     const query = datastore.createQuery(KEY_USER);
     query.filter('email', email);
 
     const data = await datastore.runQuery(query);
-    return parseDataFromDatastoreResult<IUser[]>(data)[0];
+    return parseDataFromDatastoreResult<IUser>(data)[0];
   };
 }
+
+export const UserModel = new UserModelFactory();

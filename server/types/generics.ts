@@ -9,3 +9,9 @@ export interface IModel<T> {
 export interface IObject {
   id?: number;
 }
+
+export interface IPaginatedData<T> {
+  more: boolean;
+  data: T[];
+  nextToken: string;
+}

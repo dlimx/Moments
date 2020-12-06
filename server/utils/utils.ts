@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
+import _ from 'lodash';
+import { ObjectSchema, Schema } from 'yup';
 import { newError, sendError } from './error';
 import { ERROR_ACCEPT_TYPE } from '../../constants/messages';
 import { IObject } from '../types/generics';
@@ -23,4 +25,18 @@ export const checkClientAcceptType = (req: Request, res: Response, next: NextFun
   }
 
   next();
+};
+
+export const validate = (schema: Schema<any>, body: string = 'body') => async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    await schema.validate(_.get(req, body));
+    next();
+  } catch (e) {
+    const error = newError(HttpStatus.BadRequest, e.errors[0]);
+    sendError(res, error);
+  }
 };
