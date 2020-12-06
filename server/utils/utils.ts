@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { newError, sendError } from './error';
 import { ERROR_ACCEPT_TYPE } from '../../constants/messages';
 import { IObject } from '../types/generics';
-import { StatusCode } from './http';
+import { HttpStatus } from './http';
 
 export const getDataWithSelf = <T extends IObject>(req: Request, data: T) => ({
   ...data,
@@ -17,7 +17,7 @@ export const checkClientAcceptType = (req: Request, res: Response, next: NextFun
 
   if (!Accept || !Accept.includes('application/json')) {
     // && !Accept.includes('*/*') && !Accept.includes('text/plain'))
-    const error = newError(StatusCode.NotAcceptable, ERROR_ACCEPT_TYPE);
+    const error = newError(HttpStatus.NotAcceptable, ERROR_ACCEPT_TYPE);
     sendError(res, error);
     res.end();
   }

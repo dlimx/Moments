@@ -5,3 +5,6 @@ export const ERROR_NOT_FOUND = 'No boat with this boat_id exists';
 export const ERROR_NOT_ALLOWED = 'Method not allowed at this endpoint';
 export const ERROR_ACCEPT_TYPE = 'Unexpected Accept type in Header';
 export const ERROR_CONTENT_TYPE = 'Unexpected Content-Type in Header';
+export const ERROR_UNAUTHENTICATED = 'Error - please authenticate';
+export const ERROR_UNAUTHORIZED = 'Error - user does not have permission to access this resource';
+export const ERROR_INVALID_CREDENTIALS = 'Error - invalid email and/or password';
