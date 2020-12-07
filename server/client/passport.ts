@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 import jsonwebtoken, { Secret } from 'jsonwebtoken';
-import { UserModel } from '../user/model';
+import { UserModel } from '../users/model';
 import { newError } from '../utils/error';
 import { ERROR_INVALID_CREDENTIALS, ERROR_NON_UNIQUE_NAME } from '../../constants/messages';
 import { hashCompare, hashCrypto } from './crypto';
@@ -90,7 +90,7 @@ passport.use(
     async (JWTPayload, done) => {
       // passport-jwt expects simple done() call without return
       try {
-        const user = await UserModel.getByEmail(JWTPayload.id);
+        const user = await UserModel.getByEmail(JWTPayload);
         if (_.isEmpty(user)) {
           done(null, false);
         } else {

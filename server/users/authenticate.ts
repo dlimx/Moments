@@ -1,6 +1,6 @@
 import passport from 'passport';
 import { NextFunction, Request, Response } from 'express';
-import { Passport } from '../client/auth';
+import { Passport } from '../client/passport';
 import { sendError } from '../utils/error';
 
 export const login = (req: Request, res: Response, next: NextFunction) => {
@@ -26,11 +26,16 @@ export const signup = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
-  passport.authenticate(Passport.Signup, async (err, user) => {
+  passport.authenticate(Passport.JWT, async (err, user) => {
     if (err) {
       sendError(res, err);
-    } else {
+    } else if (user) {
+      res.locals.authenticated = true;
       res.locals.user = user;
+      next();
+    } else {
+      res.locals.authenticated = false;
+      res.locals.user = {};
       next();
     }
   })(req, res, next);

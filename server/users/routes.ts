@@ -1,7 +1,7 @@
 import express from 'express';
 import * as yup from 'yup';
 import { createUser, getUsers } from './controller';
-import { checkClientAcceptType, getArrayDataWithSelf, getDataWithSelf, validate } from '../utils/utils';
+import { checkHeaders, getArrayDataWithSelf, getDataWithSelf, validate } from '../utils/utils';
 import { newError, sendError } from '../utils/error';
 import { HttpStatus } from '../utils/http';
 import { ERROR_NOT_ALLOWED } from '../../constants/messages';
@@ -12,7 +12,7 @@ export const userRouter = express.Router();
 
 userRouter.post(
   '/signup',
-  checkClientAcceptType,
+  checkHeaders,
   validate(
     yup.object({
       name: yup.string().required(),
@@ -33,7 +33,7 @@ userRouter.post(
 
 userRouter.post(
   '/login',
-  checkClientAcceptType,
+  checkHeaders,
   validate(
     yup.object({
       email: yup.string().required(),
