@@ -6,10 +6,31 @@ import { ERROR_ACCEPT_TYPE } from '../../constants/messages';
 import { IObject } from '../../types/generics';
 import { HttpStatus } from './http';
 
-export const getDataWithSelf = <T extends IObject>(req: Request, data: T) => ({
-  ...data,
-  self: `${req.protocol}://${req.get('host')}${req.baseUrl}/${data.id}`,
-});
+export const getDataWithSelf = <T extends IObject>(req: Request, data: T) => {
+  const result = {
+    ...data,
+    self: `${req.protocol}://${req.get('host')}${req.baseUrl}/${data.id}`,
+  } as any;
+
+  // TODO - strip hacky way of adding self - for assignment only
+
+  console.log(result);
+  if (result.activityIDs) {
+    result.activityIDs = result.activityIDs.map((id: number) => ({
+      id,
+      self: `${req.protocol}://${req.get('host')}${req.baseUrl}/${data.id}`.replace('categories', 'activities'),
+    }));
+  }
+
+  if (result.categoryIDs) {
+    result.categoryIDs = result.categoryIDs.map((id: number) => ({
+      id,
+      self: `${req.protocol}://${req.get('host')}${req.baseUrl}/${data.id}`.replace('activities', 'categories'),
+    }));
+  }
+
+  return result as T;
+};
 
 export const getArrayDataWithSelf = <T extends IObject>(req: Request, data: T[]) =>
   data.map((datum) => getDataWithSelf(req, datum));
