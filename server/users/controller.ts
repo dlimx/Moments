@@ -1,4 +1,5 @@
-import { IUserData, UserModel } from './model';
+import { UserModel } from './model';
+import { IUserData } from '../../types/user';
 
 export const createUser = async (payload: IUserData) => UserModel.create(payload);
 

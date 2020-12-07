@@ -6,7 +6,7 @@ import { newError, sendError } from '../utils/error';
 import { HttpStatus } from '../utils/http';
 import { ERROR_NOT_ALLOWED } from '../../constants/messages';
 import { login, signup } from './authenticate';
-import { IUser } from './model';
+import { IUser } from '../../types/user';
 
 export const userRouter = express.Router();
 

@@ -1,6 +1,6 @@
 import passport from 'passport';
 import { NextFunction, Request, Response } from 'express';
-import { Passport } from '../client/passport';
+import { Passport } from '../clients/passport';
 import { sendError } from '../utils/error';
 
 export const login = (req: Request, res: Response, next: NextFunction) => {

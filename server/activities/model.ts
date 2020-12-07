@@ -1,8 +1,8 @@
 import { Datastore } from '@google-cloud/datastore';
-import { IModel, IPaginatedData } from '../types/generics';
-import { datastore } from '../client/datastore';
+import { IModel, IPaginatedData } from '../../types/generics';
+import { datastore } from '../clients/datastore';
 import { DEFAULT_PAGE_SIZE, KEY_ACTIVITY } from '../../constants/constants';
-import { parseDataFromDatastoreResult, parseIDFromDatastoreResult } from '../client/datastoreUtils';
+import { parseDataFromDatastoreResult, parseIDFromDatastoreResult } from '../clients/datastoreUtils';
 import { newError } from '../utils/error';
 import { HttpStatus } from '../utils/http';
 import { ERROR_NOT_FOUND } from '../../constants/messages';

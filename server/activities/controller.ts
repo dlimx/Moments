@@ -11,7 +11,7 @@ import {
 } from '../../constants/messages';
 import { getCategoryById } from '../categories/controller';
 import { CategoryModel } from '../categories/model';
-import { IPaginatedData } from '../types/generics';
+import { IPaginatedData } from '../../types/generics';
 
 export const createActivity = async (userID: number, payload: IActivityData): Promise<IActivity> => {
   const duplicateNames = await ActivityModel.getByName(payload.name);

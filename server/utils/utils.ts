@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { ObjectSchema, Schema } from 'yup';
 import { newError, sendError } from './error';
 import { ERROR_ACCEPT_TYPE } from '../../constants/messages';
-import { IObject } from '../types/generics';
+import { IObject } from '../../types/generics';
 import { HttpStatus } from './http';
 
 export const getDataWithSelf = <T extends IObject>(req: Request, data: T) => ({

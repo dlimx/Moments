@@ -1,19 +1,8 @@
-import { IModel } from '../types/generics';
-import { datastore } from '../client/datastore';
+import { IModel } from '../../types/generics';
+import { datastore } from '../clients/datastore';
 import { KEY_USER } from '../../constants/constants';
-import { parseDataFromDatastoreResult, parseIDFromDatastoreResult } from '../client/datastoreUtils';
-
-export interface IUserData {
-  name: string;
-  email: string;
-  password?: string;
-}
-
-export interface IUser extends IUserData {
-  id: number;
-  token?: string;
-  self?: string;
-}
+import { parseDataFromDatastoreResult, parseIDFromDatastoreResult } from '../clients/datastoreUtils';
+import {IUser} from "../../types/user";
 
 class UserModelFactory implements Partial<IModel<IUser>> {
   // explicitly not getAll to avoid pagination

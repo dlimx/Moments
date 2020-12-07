@@ -4,7 +4,7 @@ import { newError } from '../utils/error';
 import { HttpStatus } from '../utils/http';
 import { ERROR_NON_UNIQUE_NAME } from '../../constants/messages';
 import { ActivityModel } from '../activities/model';
-import { IPaginatedData } from '../types/generics';
+import { IPaginatedData } from '../../types/generics';
 
 export const createCategory = async (payload: ICategoryData): Promise<ICategory> => {
   const duplicateNames = await CategoryModel.getByName(payload.name);
