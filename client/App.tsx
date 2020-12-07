@@ -13,10 +13,10 @@ export const App = () => {
   const location = useLocation();
 
   return (
-    <Layout>
+    <Layout style={{ minHeight: '100vh' }}>
       <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ float: 'left' }}>
-          <Title style={{ color: 'white', margin: 0 }}>Moments</Title>
+          <Title style={{ color: 'white', margin: 0, fontSize: 20 }}>Moments</Title>
         </div>
         <Menu theme="dark" mode="horizontal" selectedKeys={[location.pathname]}>
           <Menu.Item key="/">

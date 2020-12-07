@@ -17,7 +17,7 @@ module.exports = {
       {
         test: /\.(ts|tsx|js|jsx)?$/,
         exclude: /node_modules/,
-        use: ['ts-loader', 'babel-loader'],
+        use: ['babel-loader', 'ts-loader'],
       },
       {
         test: /\.(jpg|jpeg|png|svg)?$/,

@@ -1,6 +1,6 @@
 const defaultPlugins = ['prettier'];
 
-const defaultExtends = ['prettier'];
+const defaultExtends = [];
 
 const defaultRules = {
   'prettier/prettier': 'error',
@@ -10,12 +10,14 @@ const defaultRules = {
   'object-curly-newline': 'off',
   'no-unused-vars': 'warn',
   'implicit-arrow-linebreak': 'off',
+  'react/prop-types': 'off',
+  'react/jsx-one-expression-per-line': 'off',
 };
 
 module.exports = {
   root: true,
   plugins: [...defaultPlugins],
-  extends: [...defaultExtends, 'eslint-config-prettier', 'airbnb'],
+  extends: [...defaultExtends, 'prettier', 'eslint-config-prettier', 'airbnb'],
   rules: {
     ...defaultRules,
   },
