@@ -25,8 +25,9 @@ categoryRouter.post('/', checkHeaders, authenticate, async (req, res, next) => {
 
 categoryRouter.get('/', checkHeaders, authenticate, async (req, res, next) => {
   try {
-    const data = await getAllCategories();
-    res.status(HttpStatus.Success).send(getArrayDataWithSelf(req, data));
+    const cursor = req.query.cursor as string | undefined;
+    const data = await getAllCategories(cursor);
+    res.status(HttpStatus.Success).send({ ...data, data: getArrayDataWithSelf(req, data.data) });
   } catch (error) {
     sendError(res, error);
   }

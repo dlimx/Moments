@@ -11,6 +11,7 @@ import {
 } from '../../constants/messages';
 import { getCategoryById } from '../categories/controller';
 import { CategoryModel } from '../categories/model';
+import { IPaginatedData } from '../types/generics';
 
 export const createActivity = async (userID: number, payload: IActivityData): Promise<IActivity> => {
   const duplicateNames = await ActivityModel.getByName(payload.name);
@@ -25,10 +26,14 @@ export const createActivity = async (userID: number, payload: IActivityData): Pr
   return ActivityModel.create(payload);
 };
 
-export const getAllActivities = async (): Promise<IActivity[]> => ActivityModel.getAll();
+export const getAllActivities = async (cursor?: string): Promise<IPaginatedData<IActivity>> =>
+  ActivityModel.getAll(cursor);
 
-export const getActivitiesByUser = async (userID: number, authenticated = false): Promise<IActivity[]> =>
-  ActivityModel.getByUserID(userID, authenticated);
+export const getActivitiesByUser = async (
+  userID: number,
+  authenticated = false,
+  cursor?: string,
+): Promise<IPaginatedData<IActivity>> => ActivityModel.getByUserID(userID, authenticated, cursor);
 
 export const getActivityById = async (userID: number, id: number): Promise<IActivity> => {
   const data = await ActivityModel.getByID(id);

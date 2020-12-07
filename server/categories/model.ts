@@ -1,6 +1,7 @@
+import { Datastore } from '@google-cloud/datastore';
 import { IModel } from '../types/generics';
 import { datastore } from '../client/datastore';
-import { KEY_CATEGORY } from '../../constants/constants';
+import { DEFAULT_PAGE_SIZE, KEY_CATEGORY } from '../../constants/constants';
 import { parseDataFromDatastoreResult, parseIDFromDatastoreResult } from '../client/datastoreUtils';
 import { newError } from '../utils/error';
 import { HttpStatus } from '../utils/http';
@@ -26,11 +27,19 @@ class CategoryModelFactory implements IModel<ICategory> {
     return { ...payload, id: parseIDFromDatastoreResult(data) } as ICategory;
   };
 
-  getAll = async () => {
-    const query = datastore.createQuery(KEY_CATEGORY);
+  getAll = async (cursor?: string) => {
+    const query = datastore.createQuery(KEY_CATEGORY).limit(DEFAULT_PAGE_SIZE);
+
+    if (cursor) {
+      query.start(cursor);
+    }
 
     const data = await datastore.runQuery(query);
-    return parseDataFromDatastoreResult<ICategory>(data);
+    return {
+      data: parseDataFromDatastoreResult<ICategory>(data),
+      nextCursor: data[1].endCursor,
+      more: data[1].moreResults !== Datastore.NO_MORE_RESULTS,
+    };
   };
 
   getByID = async (id: number) => {

@@ -33,12 +33,13 @@ activityRouter.post('/', checkHeaders, authenticate, async (req, res, next) => {
 activityRouter.get('/', checkHeaders, authenticate, async (req, res, next) => {
   try {
     let data;
+    const cursor = req.query.cursor as string | undefined;
     if (!res.locals.authenticated) {
-      data = await getAllActivities();
+      data = await getAllActivities(cursor);
     } else {
-      data = await getActivitiesByUser(res.locals.user.id, true);
+      data = await getActivitiesByUser(res.locals.user.id, true, cursor);
     }
-    res.status(HttpStatus.Success).send(getArrayDataWithSelf(req, data));
+    res.status(HttpStatus.Success).send({ ...data, data: getArrayDataWithSelf(req, data.data) });
   } catch (error) {
     sendError(res, error);
   }

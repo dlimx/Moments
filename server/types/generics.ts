@@ -1,7 +1,7 @@
 export interface IModel<T> {
   getByID: (id: number) => Promise<T>;
   getByName: (name: string) => Promise<T>;
-  getAll: () => Promise<T[]>;
+  getAll: (offset?: string) => Promise<IPaginatedData<T>>;
   getAllByID: (ids: number[]) => Promise<T[]>;
   editAllByID: (ids: number[], payloads: T[]) => Promise<T[]>;
   create: (payload: Partial<T>) => Promise<T>;
@@ -16,5 +16,5 @@ export interface IObject {
 export interface IPaginatedData<T> {
   more: boolean;
   data: T[];
-  nextToken: string;
+  nextCursor?: string;
 }

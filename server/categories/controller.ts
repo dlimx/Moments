@@ -2,8 +2,9 @@
 import { CategoryModel, ICategory, ICategoryData } from './model';
 import { newError } from '../utils/error';
 import { HttpStatus } from '../utils/http';
-import { ERROR_NON_UNIQUE_NAME, ERROR_UNAUTHORIZED } from '../../constants/messages';
+import { ERROR_NON_UNIQUE_NAME } from '../../constants/messages';
 import { ActivityModel } from '../activities/model';
+import { IPaginatedData } from '../types/generics';
 
 export const createCategory = async (payload: ICategoryData): Promise<ICategory> => {
   const duplicateNames = await CategoryModel.getByName(payload.name);
@@ -17,7 +18,8 @@ export const createCategory = async (payload: ICategoryData): Promise<ICategory>
   return CategoryModel.create(payload);
 };
 
-export const getAllCategories = async (): Promise<ICategory[]> => CategoryModel.getAll();
+export const getAllCategories = async (cursor?: string): Promise<IPaginatedData<ICategory>> =>
+  CategoryModel.getAll(cursor);
 
 export const getCategoryById = async (id: number): Promise<ICategory> => {
   const data = await CategoryModel.getByID(id);
