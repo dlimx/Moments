@@ -10,6 +10,7 @@ export interface ICategoryData {
   name: string;
   description?: string;
   keywords?: string[];
+  activityIDs: number[];
 }
 
 export interface ICategory extends ICategoryData {
@@ -44,6 +45,14 @@ class CategoryModelFactory implements IModel<ICategory> {
     return { ...data[0], id };
   };
 
+  getAllByID = async (ids: number[]) => {
+    const keys = ids.map((id) => datastore.key([KEY_CATEGORY, id]));
+
+    const data = await datastore.get(keys);
+
+    return ids.map((id, i) => ({ ...data[0][i], id }));
+  };
+
   getByName = async (name: string) => {
     const query = datastore.createQuery(KEY_CATEGORY);
     query.filter('name', name);
@@ -57,6 +66,14 @@ class CategoryModelFactory implements IModel<ICategory> {
 
     await datastore.save({ key, data: payload });
     return { ...payload, id } as ICategory;
+  };
+
+  editAllByID = async (ids: number[], payloads: ICategory[]) => {
+    const data = ids.map((id, i) => ({ key: datastore.key([KEY_CATEGORY, id]), data: payloads[i] }));
+
+    await datastore.save(data);
+
+    return payloads;
   };
 
   deleteByID = async (id: number): Promise<void> => {

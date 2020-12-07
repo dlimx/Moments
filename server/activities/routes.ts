@@ -7,6 +7,8 @@ import {
   getActivityById,
   getAllActivities,
   patchActivityById,
+  addActivityCategory,
+  removeActivityCategory,
 } from './controller';
 import { newError, sendError } from '../utils/error';
 import { ERROR_UNAUTHENTICATED } from '../../constants/messages';
@@ -74,6 +76,42 @@ activityRouter.patch('/:id', checkHeaders, authenticate, async (req, res, next) 
     const data = await patchActivityById(res.locals.user.id, parseBase10Int(req.params.id), req.body);
 
     res.status(HttpStatus.Success).send(getDataWithSelf(req, data));
+  } catch (error) {
+    sendError(res, error);
+  }
+});
+
+activityRouter.put('/:id/categories/:categoryID', authenticate, async (req, res, next) => {
+  try {
+    if (!res.locals.authenticated) {
+      throw newError(HttpStatus.Unauthorized, ERROR_UNAUTHENTICATED);
+    }
+
+    const data = await addActivityCategory(
+      res.locals.user.id,
+      parseBase10Int(req.params.id),
+      parseBase10Int(req.params.categoryID),
+    );
+
+    res.status(HttpStatus.Success).send(getDataWithSelf(req, data[0]));
+  } catch (error) {
+    sendError(res, error);
+  }
+});
+
+activityRouter.delete('/:id/categories/:categoryID', authenticate, async (req, res, next) => {
+  try {
+    if (!res.locals.authenticated) {
+      throw newError(HttpStatus.Unauthorized, ERROR_UNAUTHENTICATED);
+    }
+
+    await removeActivityCategory(
+      res.locals.user.id,
+      parseBase10Int(req.params.id),
+      parseBase10Int(req.params.categoryID),
+    );
+
+    res.status(HttpStatus.NoContent).send(null);
   } catch (error) {
     sendError(res, error);
   }

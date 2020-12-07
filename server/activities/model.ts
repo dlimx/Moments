@@ -12,7 +12,7 @@ export interface IActivityData {
   time: number;
   userID: number;
   public: boolean;
-  categoryIDs?: number[];
+  categoryIDs: number[];
 }
 
 export interface IActivity extends IActivityData {
@@ -48,6 +48,14 @@ class ActivityModelFactory implements IModel<IActivity> {
     return { ...data[0], id };
   };
 
+  getAllByID = async (ids: number[]) => {
+    const keys = ids.map((id) => datastore.key([KEY_ACTIVITY, id]));
+
+    const data = await datastore.get(keys);
+
+    return ids.map((id, i) => ({ ...data[0][i], id }));
+  };
+
   getByUserID = async (userID: number, authenticated: boolean) => {
     const query = datastore.createQuery(KEY_ACTIVITY);
     query.filter('userID', userID);
@@ -73,6 +81,14 @@ class ActivityModelFactory implements IModel<IActivity> {
 
     await datastore.save({ key, data: payload });
     return { ...payload, id } as IActivity;
+  };
+
+  editAllByID = async (ids: number[], payloads: IActivity[]) => {
+    const data = ids.map((id, i) => ({ key: datastore.key([KEY_ACTIVITY, id]), data: payloads[i] }));
+
+    await datastore.save(data);
+
+    return payloads;
   };
 
   deleteByID = async (id: number): Promise<void> => {
