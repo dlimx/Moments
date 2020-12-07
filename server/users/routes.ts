@@ -50,7 +50,7 @@ userRouter.post(
   },
 );
 
-userRouter.get('/', async (req, res, next) => {
+userRouter.get('/', checkHeaders, async (req, res, next) => {
   try {
     const data = await getUsers();
     res.status(HttpStatus.Success).send(getArrayDataWithSelf<IUser>(req, data));

@@ -21,10 +21,9 @@ export const checkHeaders = (req: Request, res: Response, next: NextFunction) =>
     // && !Accept.includes('*/*') && !Accept.includes('text/plain'))
     const error = newError(HttpStatus.NotAcceptable, ERROR_ACCEPT_TYPE);
     sendError(res, error);
-    res.end();
+  } else {
+    next();
   }
-
-  next();
 };
 
 export const validate = (schema: Schema<any>, body: string = 'body', stripUnknown = true) => async (

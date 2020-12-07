@@ -37,17 +37,7 @@ export const editActivityById = async (
   payload: Partial<IActivity>,
   patch = false,
 ): Promise<IActivity> => {
-  const duplicateNames = await ActivityModel.getByName(payload.name as string);
-
-  if (duplicateNames) {
-    throw newError(HttpStatus.Forbidden, ERROR_NON_UNIQUE_NAME);
-  }
-
   const savedActivity = await getActivityById(userID, id);
-
-  if (savedActivity.userID !== userID) {
-    throw newError(HttpStatus.Forbidden, ERROR_UNAUTHORIZED);
-  }
 
   if (patch) {
     payload = {
@@ -56,6 +46,15 @@ export const editActivityById = async (
     };
   }
 
+  const duplicateNames = await ActivityModel.getByName(payload.name as string);
+
+  if (duplicateNames && duplicateNames.id !== id) {
+    throw newError(HttpStatus.Forbidden, ERROR_NON_UNIQUE_NAME);
+  }
+
+  if (savedActivity.userID !== userID) {
+    throw newError(HttpStatus.Forbidden, ERROR_UNAUTHORIZED);
+  }
   if (payload.id) {
     delete payload.id;
   }

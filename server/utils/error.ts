@@ -12,5 +12,4 @@ export const sendError = (res: Response, error: VErrorJS) => {
   const status = (error.jse_info && error.jse_info.code) || HttpStatus.BadRequest;
   console.error(error);
   res.status(status).send({ Error: error.message });
-  res.end();
 };
