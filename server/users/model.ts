@@ -16,7 +16,8 @@ export interface IUser extends IUserData {
 }
 
 class UserModelFactory implements Partial<IModel<IUser>> {
-  getAll = async () => {
+  // explicitly not getAll to avoid pagination
+  getAllUsers = async () => {
     const query = datastore.createQuery(KEY_USER);
 
     const data = await datastore.runQuery(query);

@@ -13,5 +13,13 @@
 .git
 .gitignore
 
+# Etc
+.idea
+.DS_Store
+
+# Built files
+build-client
+build-server
+
 # Node.js dependencies:
 node_modules/
